@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Online Car Booking - Rent A Ride</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/static/img/favicon.png" rel="icon">
+    <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/static/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+    <input type="hidden" value="{{csrf_token}}" id="hiddenCsrfToken">
+    {% include 'partials/header.html' %}
+    <main id="main">
+        <section id="faq" class="faq">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="content px-xl-5 text-center">
+                            <h3><span>Login</span></h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="200" id="firebaseui-auth-container">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section><!-- End Faq Section -->
+
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    <!-- Scroll Top Button -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/static/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/vendor/aos/aos.js"></script>
+    <script src="/static/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+
+
+    <script type="module">
+
+        
+        // Firebase Login UI
+        console.log('trying to login')
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // var redirectTo = window.location.href.replace('/login', '');
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult) {
+                    // User successfully signed in.
+                    console.log('insdie function')
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    let dataToSend = {}
+                    firebase.auth().onAuthStateChanged(function (user) {
+                        if (user) {
+                            console.log(user)
+                            dataToSend["userID"] = String(user.uid) ;
+                            dataToSend["email"] = String(user.email);
+                            dataToSend["userName"] = String(user.displayName);
+                            dataToSend["phoneNumber"] = String(user.phoneNumber);
+                            console.log('user created')
+                            fetch("/addUserData/", {
+                                method: "POST",
+                                credentials: "same-origin",
+                                headers: {
+                                    Accept: "application/json",
+                                    "X-CSRFToken": document.getElementById("hiddenCsrfToken").value,
+                                },
+                                body: JSON.stringify(dataToSend),
+                            }).then((res) => {
+                                console.log('aa gaya')
+                                console.log(res)
+                                return res.json();  
+                            }).then((res) => {
+                                console.log(res)
+                                if (res.status === "success") {
+                                    location.assign('/')
+                                } else if (res.status === "notApproved") {
+                                    alert("Please wait for your login request to be approved.");
+                                    logoutUser();
+                                } else if (res.status === 'failied') {
+                                    console.log('python ka error')
+                                    console.log(res.error)
+                                }else if (res.status === 'failied2') {
+                                    console.log('python ka error2')
+                                    console.log(res.error)
+                                }
+                                else {
+                                    alert("Something Went wrong!<br>Try again later...");
+                                }
+                            }).catch((error)=>{
+                                console.log('js ka error')
+                                console.log(error.message)
+                            })
+                        }
+                    });
+                    return false;
+                },
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            // signInSuccessUrl: window.location.href.replace('/login', ''),
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                { provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID, defaultCountry: 'IN', }
+
+
+            ],
+        };
+
+
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+        // window.onload = function() {
+        //   document.querySelectorAll('.firebaseui-list-item')[2].children[0].click();
+        // }
+        // your code here
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+    </script>
+
+    <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>

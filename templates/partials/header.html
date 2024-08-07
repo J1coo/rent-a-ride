@@ -1,0 +1,89 @@
+<!-- ======= Header ======= -->
+
+<style>
+    .navLink a{
+        color: rgb(233, 51, 51) !important;
+    }
+</style>
+
+<header id="header" class="header fixed-top d-flex align-items-center ">
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-firestore.memory.js"></script>
+    <!-- Don't change the format for any other products. -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <!-- firebase -->
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+        <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <img src="/static/img/Rent A Ride.png" alt="" style="height: 4em;max-height: unset;">
+        </a>
+
+        <!-- Nav Menu -->
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li class="navLink"><a href="/" class="active">Home</a></li>
+                <li class="navLink"><a href="/aboutUs">About Us</a></li>
+                <li class="navLink"><a href="/faqs">FAQs</a></li>
+                <li class="navLink"><a href="https://drive.google.com/file/d/1Q7hAyFbwbZCudXDVqPEahdU7QZPvgVB-/view?usp=sharing"
+                        target="_blank">Terms &
+                        Condition</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav><!-- End Nav Menu -->
+
+        {% if userData.userID %}
+            <a href="/userProfile/" class="primary" style="cursor: pointer;font-size: 1.5em;display: flex;align-items: center;justify-content: center;margin-right: 1em;">
+                <i class="bi bi-person-gear"></i>
+            </a>
+        <!-- <a class="btn-getstarted" id="logoutUser">Log out</a> -->
+        {% else %}
+        <a class="btn-getstarted" href="/login">Login</a>
+        {% endif %}
+    </div>
+
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAN9oUD8S4sTBaFJT6yyJbfyZzTPtTHS78",
+            authDomain: "gcbp-fe364.firebaseapp.com",
+            projectId: "gcbp-fe364",
+            storageBucket: "gcbp-fe364.appspot.com",
+            messagingSenderId: "615512236165",
+            appId: "1:615512236165:web:0611217a3d1deed4e149ec",
+            measurementId: "G-L6H2YZDE89"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User Logged in
+                document.getElementById('cartLink').href = '/cart/';
+                document.getElementById('loginBtn').classList.remove('d-flex');
+                document.getElementById('loginBtn').classList.add('d-none');
+                document.getElementById('logoutBtn').classList.remove('d-none');
+                document.getElementById('logoutBtn').classList.add('d-flex');
+                document.getElementById('customerId').value = user.uid;
+                if (window.location.href.includes('login/')) {
+                    window.location.href = '/';
+                }
+            } else {
+                // User not Logged in
+            }
+        })
+
+        //=$ Logout Functionality
+        document.getElementById('logoutUser').addEventListener('click', (() => {
+            firebase.auth().signOut().then(() => {
+                console.log('logout')
+                location.assign('/logout/')
+            }).catch((error) => {
+                alert('Something went wrong please try again ...')
+            });
+        }))
+
+    </script>
+
+</header>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Online Car Booking - Rent A Ride</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/static/img/favicon.png" rel="icon">
+    <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- Vendor CSS Files -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/static/css/main.css" rel="stylesheet">
+
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+    {% include "loader.html" %}
+
+    <input type="hidden" id="hiddenCsrfToken" value="{{csrf_token}}">
+    {% include 'partials/header.html' %}
+    <main id="main">
+        <section id="about" class="about">
+            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+                <h2>Choose Price</h2>
+                <p>We are dedicated to delivering a travel experience that goes beyond just reaching your destination.
+                    Here's
+                    why you should choose us:</p>
+            </div>
+
+            <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="row align-items-xl-center gy-5">
+
+                    <div class="col-xl-4 content">
+                        <h3>Offer Details</h3>
+                        <h4>Route Details : </h4>
+                        <p> &#9679;<span
+                                style="margin-left: 10px;">{{userData.bookingDetails.pickUpLocation.formattedName}}</span>
+                            &hArr; <span
+                                style="margin-left: 10px;">{{userData.bookingDetails.destinationLocation.formattedName}}</span>
+                        </p>
+                        <h4>Date: </h4>
+                        <p> &#9679;<span style="margin-left: 10px;">{{userData.bookingDetails.date}}</span>
+                            <!-- &hArr;  -->
+                            <!-- <span style="margin-left: 10px;"> 08-09-2023</span></p> -->
+                        <h5>Inclusion</h5>
+                        <p>
+                        <ul>
+                            <li>Total {{totalDistance}} KM Included</li>
+                            <!-- <li>Day Driver Allowance included</li>
+                            <li>Fuel Included</li> -->
+                            <li>Per KM AC inclusion</li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="col-xl-4 content">
+                        <div class="row gy-4 icon-boxes">
+                            <!-- <h4>Market Acceptable Pricing Range</h4> -->
+                            <h3>Total Price : <Span>Rs {{totalPrice}}</Span></h3>
+                            <!-- <p>Tolls, parking, State permits extra</p> -->
+
+                            <!-- <div class="col-md-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                                <div class="icon-box">
+                                    <form action="">
+                                        <div class="col-lg-12 d-flex flex-column">
+                                            <div class="input">
+                                                <input type="radio" id="html" name="fav_language" value="HTML">
+                                                <label for="html">Price Range : <Span>Rs 1299 - Rs
+                                                        3900</Span></label><br>
+                                            </div>
+                                            <div class="input">
+                                                <input type="radio" id="css" name="fav_language" value="CSS">
+                                                <label for="css">Price Range : <Span>Rs 1299 - Rs
+                                                        3900</Span></label><br>
+                                            </div>
+                                            <div class="input">
+                                                <input type="radio" id="javascript" name="fav_language"
+                                                    value="JavaScript">
+                                                <label for="javascript">Price Range : <Span>Rs 1299 - Rs
+                                                        3900</Span></label>
+                                            </div>
+                                            <div class="input">
+                                                <input type="radio" id="javascript" name="fav_language"
+                                                    value="JavaScript">
+                                                <label for="javascript">Price Range : <Span>Rs 1299 - Rs
+                                                        3900</Span></label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>  -->
+                        </div>
+                        <a href="#" class="read-more" style="margin-top: 1rem;" data-toggle="modal"
+                            data-target="#phoneModal"><span>Confirm Booking</span><i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Book and OTP Verification ---Asks for Contact number -->
+
+        <!-- Contact Number Modal -->
+        <div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Please enter your contact number for confirmation
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="d-flex flex-column" style="margin-top: 1rem;">
+                            <label for="num">Enter your Contact Number : </label>
+                            <input id="OTPnumber" class="numberInput" type="number" name="num">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button id="otpButtonId" onclick="sendOTP()" type="button" class="btn btn-primary">Get
+                            OTP</button>
+
+                        <button class="d-none" data-toggle="modal" data-target="#otpModal" id="otpModalButton">Open OTP
+                            modal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Contact Number Modal -->
+
+        <!-- OTP Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form onsubmit="submitOTP(event)" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Enter the code generated on your mobile device
+                            below to log in!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="prompt">
+                            <h4>Booking Confirmation</h4>
+                            <p>Booking offer will be shared with service providers and they may contact you</p>
+                        </div>
+                        <div class="digit-group" data-group-name="digits" data-autosubmit="false" autocomplete="off">
+                            <label for="OTP">Enter OTP : </label>
+                            <input required id="userOTP" style="width: 100%;color: black;border: 1px solid black;" type="text" placeholder="Enter OTP">
+                        </div>
+
+                        <p>Didn't receive the OTP?</p>
+                        <a href="">Resend the code</a>
+                    </div>
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <button type="submit" class="btn btn-primary">Submit OTP</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- End OTP Modal -->
+
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    <!-- Scroll Top Button -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/static/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/vendor/aos/aos.js"></script>
+    <script src="/static/vendor/php-email-form/validate.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/static/js/main.js"></script>
+    <!-- <script src="/static/js/otp.js"></script> -->
+    <script src="/static/js/choosePrice.js"></script>
+</body>
+
+</html>
